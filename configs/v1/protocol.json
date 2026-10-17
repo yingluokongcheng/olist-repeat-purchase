@@ -1,0 +1,17 @@
+{
+  "status": "fixed before fitting or viewing model predictions",
+  "models": ["M1_background", "M2_fulfillment", "M3_regional"],
+  "estimator": "L2 logistic regression, C=0.1, lbfgs, unweighted, max_iter=3000, tol=1e-8",
+  "tuning": "none; validation is diagnostic, no configuration selected from its scores",
+  "preprocessing": "training-only median imputation and scaling; category/state one-hot with min_frequency=200; missing indicators are explicit and fixed",
+  "regional": "180-day purchase history with approval known strictly before first purchase; per-order category weights sum to one; national Dirichlet 0.5 per taxonomy category, state shrinkage strength 100 order-equivalents; multi-category features averaged across categories",
+  "regional_features": ["mean_shrunk_local_category_share", "mean_log_local_to_national_share"],
+  "split": "initial train t0<2017-09-01; validation 2017-12-01<=t0<2018-01-01; final refit t0<2018-01-01; test t0>=2018-04-01 within audited mature cohort",
+  "features": "background log1p amount/items/weight/volume/mean seller-customer distance, month sine/cosine, multi-seller, weight/dimensions/distance missing indicators, category and state; fulfillment adds log1p delivery days, late indicator, log1p late days, log1p freight/amount",
+  "metrics": ["average_precision (noninterpolated PR summary)", "Brier", "log_loss", "ROC_AUC", "top_10_percent_precision_recall_lift", "calibration quintiles"],
+  "uncertainty": "paired 1000 customer bootstrap and 1000 state-cluster bootstrap of fixed test predictions; no model refitting; percentile 95% intervals",
+  "cases": "bed_bath_table and sports_leisure, descriptive only, full audited cohort; report exact counts and Wilson intervals, no significance-driven selection",
+  "seeds": [20261016, 20261017],
+  "no_lightgbm": true,
+  "test_policy": "one fixed comparison; no model changes after test inspection"
+}

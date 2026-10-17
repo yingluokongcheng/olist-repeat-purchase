@@ -1,0 +1,17 @@
+# Local environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+# Data, generated workspaces, customer predictions and binary checkpoints
+data/raw/*
+!data/raw/.gitkeep
+runs/
+*.pkl
+*.pickle
+*.joblib
+.env
+.env.*
+# OS files
+.DS_Store
+Thumbs.db

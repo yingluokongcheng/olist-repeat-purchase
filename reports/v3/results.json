@@ -1,0 +1,561 @@
+{
+  "protocol": {
+    "status": "Fixed final exploratory algorithm comparison, agreed by user before execution",
+    "version": "LightGBM 4.7.0",
+    "models": {
+      "LR": "Frozen V2 B without month terms",
+      "G1": "Exactly the same information and frozen preprocessing as LR",
+      "G2": "G1 plus local_category_share and log_relative_share; additional preprocessing fit only on training data"
+    },
+    "parameters": {
+      "boosting_type": "gbdt",
+      "objective": "binary",
+      "metric": "binary_logloss",
+      "learning_rate": 0.03,
+      "n_estimators": 500,
+      "max_depth": 3,
+      "num_leaves": 7,
+      "min_child_samples": 500,
+      "min_child_weight": 0.001,
+      "reg_lambda": 10.0,
+      "reg_alpha": 0.0,
+      "min_split_gain": 0.0,
+      "max_bin": 63,
+      "subsample": 1.0,
+      "subsample_freq": 0,
+      "colsample_bytree": 1.0,
+      "class_weight": null,
+      "is_unbalance": false,
+      "scale_pos_weight": 1.0,
+      "random_state": 20261022,
+      "deterministic": true,
+      "force_col_wise": true,
+      "n_jobs": 2
+    },
+    "early_stopping": {
+      "metric": "binary_logloss",
+      "stopping_rounds": 50,
+      "min_delta": 1e-05,
+      "first_metric_only": true,
+      "dataset": "December 2017 development only",
+      "selection": "best_iteration_ recorded by callback, no AP selection, no cap extension"
+    },
+    "splits": {
+      "training": "July-August 2017: 6459 customers/71 repeat events",
+      "development": "December 2017: 6862/60",
+      "revision_evaluation": "April 1-May 2 2018: 7893/87, already viewed in V1 and V2"
+    },
+    "evaluation_order": "Train and save both models and a locked iteration/hash record before generating evaluation predictions",
+    "comparisons": [
+      "G1-LR",
+      "G2-G1"
+    ],
+    "metrics": [
+      "Average Precision",
+      "top790 hits/precision/recall",
+      "log_loss",
+      "Brier",
+      "mean probability and calibration quintiles",
+      "ROC_AUC supplemental"
+    ],
+    "baselines": [
+      "training constant prevalence",
+      "development constant prevalence"
+    ],
+    "bootstrap": {
+      "customer_reps": 1000,
+      "state_cluster_reps": 1000,
+      "customer_seed": 20261023,
+      "state_seed": 20261024,
+      "scope": "paired fixed predictions, no model refitting or early-stopping re-selection"
+    },
+    "interpretation": "AP point improvement with both bootstrap intervals above zero permits only clear ranking improvement in this exploratory comparison. Otherwise insufficient evidence. Probability deterioration is a tradeoff, not overall superiority. No extra regional gain does not establish regional irrelevance.",
+    "ties": "Stable customer ID ascending order for equal scores, as in LR; report boundary ties",
+    "stop_rule": "Only G1 and G2, one parameter setting, one seed. No retuning, new features, calibration, post-development refit, or extensions based on evaluation outcomes. Record genuine implementation fixes separately.",
+    "preservation": "Hash all V1/V2 result and work artifacts before and after; new work/output directories only",
+    "independent_confirmation": false
+  },
+  "registration": {
+    "registered_utc": "2026-10-17T02:04:10.791435+00:00",
+    "protocol_sha256": "8e2027ab05b3c40b7c7b58070d7960f5c02c72d3e698463d1e6a4e22ab98c948",
+    "preserved_files": 63
+  },
+  "locked_models": {
+    "locked_utc": "2026-10-17T02:05:26.063632+00:00",
+    "protocol_sha256": "8e2027ab05b3c40b7c7b58070d7960f5c02c72d3e698463d1e6a4e22ab98c948",
+    "models": {
+      "G1": {
+        "best_iteration": 1,
+        "evaluated_iterations": 51,
+        "selected_dev_logloss": 0.050392338502262685,
+        "numerical_min_dev_logloss": 0.05038829696769744,
+        "numerical_min_iteration": 3,
+        "selected_tree_count": 1,
+        "max_leaves_in_selected_trees": 6,
+        "actual_parameters": {
+          "boosting_type": "gbdt",
+          "class_weight": null,
+          "colsample_bytree": 1.0,
+          "importance_type": "split",
+          "learning_rate": 0.03,
+          "max_depth": 3,
+          "min_child_samples": 500,
+          "min_child_weight": 0.001,
+          "min_split_gain": 0.0,
+          "n_estimators": 500,
+          "n_jobs": 2,
+          "num_leaves": 7,
+          "objective": "binary",
+          "random_state": 20261022,
+          "reg_alpha": 0.0,
+          "reg_lambda": 10.0,
+          "subsample": 1.0,
+          "subsample_for_bin": 200000,
+          "subsample_freq": 0,
+          "metric": "binary_logloss",
+          "max_bin": 63,
+          "is_unbalance": false,
+          "scale_pos_weight": 1.0,
+          "deterministic": true,
+          "force_col_wise": true
+        },
+        "model_sha256": "e93b206acc952bb38a23e1bbf5b7194c84dfe15ceb8fb678ecb3ad890a3f1915"
+      },
+      "G2": {
+        "best_iteration": 146,
+        "evaluated_iterations": 196,
+        "selected_dev_logloss": 0.05019336391546194,
+        "numerical_min_dev_logloss": 0.05019044114623715,
+        "numerical_min_iteration": 163,
+        "selected_tree_count": 146,
+        "max_leaves_in_selected_trees": 7,
+        "actual_parameters": {
+          "boosting_type": "gbdt",
+          "class_weight": null,
+          "colsample_bytree": 1.0,
+          "importance_type": "split",
+          "learning_rate": 0.03,
+          "max_depth": 3,
+          "min_child_samples": 500,
+          "min_child_weight": 0.001,
+          "min_split_gain": 0.0,
+          "n_estimators": 500,
+          "n_jobs": 2,
+          "num_leaves": 7,
+          "objective": "binary",
+          "random_state": 20261022,
+          "reg_alpha": 0.0,
+          "reg_lambda": 10.0,
+          "subsample": 1.0,
+          "subsample_for_bin": 200000,
+          "subsample_freq": 0,
+          "metric": "binary_logloss",
+          "max_bin": 63,
+          "is_unbalance": false,
+          "scale_pos_weight": 1.0,
+          "deterministic": true,
+          "force_col_wise": true
+        },
+        "model_sha256": "e14e741cf31a444b16a6e6e176fd0873fb95f83c2fbc1eae3dc21538245a3e08"
+      }
+    },
+    "evaluation_predictions_generated": false
+  },
+  "metrics": [
+    {
+      "stage": "development",
+      "model": "LR",
+      "n": 6862,
+      "events": 60,
+      "observed_rate": 0.008743806470416789,
+      "mean_prediction": 0.010063998262801438,
+      "AP": 0.012470507207924275,
+      "ROC_AUC": 0.5598990492992257,
+      "log_loss": 0.050973271745339915,
+      "Brier": 0.008674986181723077,
+      "top_n": 687,
+      "top_hits": 10,
+      "top_precision": 0.01455604075691412,
+      "top_recall": 0.16666666666666666,
+      "top_lift": 1.6647258612324114,
+      "boundary_tie_count": 1,
+      "boundary_ties_selected": 1
+    },
+    {
+      "stage": "development",
+      "model": "G1",
+      "n": 6862,
+      "events": 60,
+      "observed_rate": 0.008743806470416789,
+      "mean_prediction": 0.010986430427167371,
+      "AP": 0.008924146445294222,
+      "ROC_AUC": 0.5026168773890032,
+      "log_loss": 0.05039233850226409,
+      "Brier": 0.008672331215035254,
+      "top_n": 687,
+      "top_hits": 4,
+      "top_precision": 0.005822416302765648,
+      "top_recall": 0.06666666666666667,
+      "top_lift": 0.6658903444929646,
+      "boundary_tie_count": 1275,
+      "boundary_ties_selected": 687
+    },
+    {
+      "stage": "development",
+      "model": "G2",
+      "n": 6862,
+      "events": 60,
+      "observed_rate": 0.008743806470416789,
+      "mean_prediction": 0.010394436784489702,
+      "AP": 0.013931435938450724,
+      "ROC_AUC": 0.5593452906008036,
+      "log_loss": 0.05019336391546195,
+      "Brier": 0.00866887864595819,
+      "top_n": 687,
+      "top_hits": 10,
+      "top_precision": 0.01455604075691412,
+      "top_recall": 0.16666666666666666,
+      "top_lift": 1.6647258612324114,
+      "boundary_tie_count": 1,
+      "boundary_ties_selected": 1
+    },
+    {
+      "stage": "development",
+      "model": "P_train",
+      "n": 6862,
+      "events": 60,
+      "observed_rate": 0.008743806470416789,
+      "mean_prediction": 0.01099241368632915,
+      "AP": 0.008743806470416789,
+      "ROC_AUC": 0.5,
+      "log_loss": 0.050396004464636907,
+      "Brier": 0.008672408553236139,
+      "top_n": 687,
+      "top_hits": null,
+      "top_precision": null,
+      "top_recall": null,
+      "top_lift": null,
+      "boundary_tie_count": null,
+      "boundary_ties_selected": null
+    },
+    {
+      "stage": "development",
+      "model": "P_dev",
+      "n": 6862,
+      "events": 60,
+      "observed_rate": 0.008743806470416789,
+      "mean_prediction": 0.008743806470416785,
+      "AP": 0.008743806470416789,
+      "ROC_AUC": 0.5,
+      "log_loss": 0.05014594834975364,
+      "Brier": 0.008667352318824683,
+      "top_n": 687,
+      "top_hits": null,
+      "top_precision": null,
+      "top_recall": null,
+      "top_lift": null,
+      "boundary_tie_count": null,
+      "boundary_ties_selected": null
+    },
+    {
+      "stage": "evaluation",
+      "model": "LR",
+      "n": 7893,
+      "events": 87,
+      "observed_rate": 0.011022424933485367,
+      "mean_prediction": 0.009422646106073043,
+      "AP": 0.01566834799190259,
+      "ROC_AUC": 0.5772909727559996,
+      "log_loss": 0.06121331603410853,
+      "Brier": 0.010900754468128823,
+      "top_n": 790,
+      "top_hits": 11,
+      "top_precision": 0.013924050632911392,
+      "top_recall": 0.12643678160919541,
+      "top_lift": 1.2632474901789612,
+      "boundary_tie_count": 1,
+      "boundary_ties_selected": 1
+    },
+    {
+      "stage": "evaluation",
+      "model": "G1",
+      "n": 7893,
+      "events": 87,
+      "observed_rate": 0.011022424933485367,
+      "mean_prediction": 0.010991657937813669,
+      "AP": 0.012260196752655664,
+      "ROC_AUC": 0.5313861132462209,
+      "log_loss": 0.060634391517971675,
+      "Brier": 0.01090062045353002,
+      "top_n": 790,
+      "top_hits": 13,
+      "top_precision": 0.016455696202531647,
+      "top_recall": 0.14942528735632185,
+      "top_lift": 1.4929288520296815,
+      "boundary_tie_count": 1548,
+      "boundary_ties_selected": 790
+    },
+    {
+      "stage": "evaluation",
+      "model": "G2",
+      "n": 7893,
+      "events": 87,
+      "observed_rate": 0.011022424933485367,
+      "mean_prediction": 0.011265487769335116,
+      "AP": 0.015311304860455238,
+      "ROC_AUC": 0.5744571667535435,
+      "log_loss": 0.060511110768024026,
+      "Brier": 0.010899428492270049,
+      "top_n": 790,
+      "top_hits": 18,
+      "top_precision": 0.02278481012658228,
+      "top_recall": 0.20689655172413793,
+      "top_lift": 2.067132256656482,
+      "boundary_tie_count": 1,
+      "boundary_ties_selected": 1
+    },
+    {
+      "stage": "evaluation",
+      "model": "P_train",
+      "n": 7893,
+      "events": 87,
+      "observed_rate": 0.011022424933485367,
+      "mean_prediction": 0.01099241368632915,
+      "AP": 0.011022424933485367,
+      "ROC_AUC": 0.5,
+      "log_loss": 0.060648640565495966,
+      "Brier": 0.010900931982746003,
+      "top_n": 790,
+      "top_hits": null,
+      "top_precision": null,
+      "top_recall": null,
+      "top_lift": null,
+      "boundary_tie_count": null,
+      "boundary_ties_selected": null
+    },
+    {
+      "stage": "evaluation",
+      "model": "P_dev",
+      "n": 7893,
+      "events": 87,
+      "observed_rate": 0.011022424933485367,
+      "mean_prediction": 0.008743806470416785,
+      "AP": 0.011022424933485367,
+      "ROC_AUC": 0.5,
+      "log_loss": 0.0609252432929138,
+      "Brier": 0.01090612318417128,
+      "top_n": 790,
+      "top_hits": null,
+      "top_precision": null,
+      "top_recall": null,
+      "top_lift": null,
+      "boundary_tie_count": null,
+      "boundary_ties_selected": null
+    }
+  ],
+  "bootstrap": [
+    {
+      "unit": "customer",
+      "replicates": 1000,
+      "intervals": {
+        "AP_G1-LR": {
+          "low": -0.01956087932953418,
+          "high": 0.00012353353983587102
+        },
+        "log_loss_G1-LR": {
+          "low": -0.0023299181292209216,
+          "high": 0.0009969660771574744
+        },
+        "Brier_G1-LR": {
+          "low": -2.6343797373127492e-05,
+          "high": 2.89087304435668e-05
+        },
+        "AP_G2-G1": {
+          "low": -4.2189065840016116e-05,
+          "high": 0.007902371448621073
+        },
+        "log_loss_G2-G1": {
+          "low": -0.0012013673026302582,
+          "high": 0.000940904248292975
+        },
+        "Brier_G2-G1": {
+          "low": -3.1183139587379235e-05,
+          "high": 2.718094361701382e-05
+        },
+        "AP_G1-P_train": {
+          "low": -0.00048674551693419946,
+          "high": 0.004217305683905024
+        },
+        "log_loss_G1-P_train": {
+          "low": -4.002418813603709e-05,
+          "high": 9.19651210849765e-06
+        },
+        "Brier_G1-P_train": {
+          "low": -8.747956350054625e-07,
+          "high": 2.0055044478760668e-07
+        },
+        "AP_G2-P_train": {
+          "low": 0.0012775164274136416,
+          "high": 0.009764427404913645
+        },
+        "log_loss_G2-P_train": {
+          "low": -0.0012113897312163613,
+          "high": 0.0009263941824181716
+        },
+        "Brier_G2-P_train": {
+          "low": -3.168210982070793e-05,
+          "high": 2.7241913929853003e-05
+        }
+      }
+    },
+    {
+      "unit": "state_cluster",
+      "replicates": 1000,
+      "intervals": {
+        "AP_G1-LR": {
+          "low": -0.04144137617473869,
+          "high": 0.00031199778920439856
+        },
+        "log_loss_G1-LR": {
+          "low": -0.0049915700160859805,
+          "high": 0.0008001344955894814
+        },
+        "Brier_G1-LR": {
+          "low": -4.015074097016785e-05,
+          "high": 1.365726738584349e-05
+        },
+        "AP_G2-G1": {
+          "low": -0.0020737483486701325,
+          "high": 0.011362176359865509
+        },
+        "log_loss_G2-G1": {
+          "low": -0.001378980738848594,
+          "high": 0.002239109012017255
+        },
+        "Brier_G2-G1": {
+          "low": -2.7356889964317427e-05,
+          "high": 4.185756785977566e-05
+        },
+        "AP_G1-P_train": {
+          "low": -0.0010434302515130547,
+          "high": 0.003951347069505693
+        },
+        "log_loss_G1-P_train": {
+          "low": -3.765489145599633e-05,
+          "high": 1.8214536625326358e-05
+        },
+        "Brier_G1-P_train": {
+          "low": -8.240171991872637e-07,
+          "high": 3.999814755201861e-07
+        },
+        "AP_G2-P_train": {
+          "low": -0.0014926469242412586,
+          "high": 0.012018046162269418
+        },
+        "log_loss_G2-P_train": {
+          "low": -0.0014109917806248208,
+          "high": 0.0022400877088349916
+        },
+        "Brier_G2-P_train": {
+          "low": -2.8133050441439718e-05,
+          "high": 4.219975163074238e-05
+        }
+      }
+    }
+  ],
+  "features": {
+    "G1": [
+      "num__log_amount",
+      "num__log_item_count",
+      "num__log_weight_g",
+      "num__log_volume_cm3",
+      "num__log_distance_km",
+      "num__multi_seller",
+      "num__weight_missing",
+      "num__dimensions_missing",
+      "num__distance_missing",
+      "num__log_delivery_days",
+      "num__late",
+      "num__log_late_days",
+      "num__log_freight_ratio",
+      "cat__category_model_bed_bath_table",
+      "cat__category_model_computers_accessories",
+      "cat__category_model_cool_stuff",
+      "cat__category_model_furniture_decor",
+      "cat__category_model_garden_tools",
+      "cat__category_model_health_beauty",
+      "cat__category_model_housewares",
+      "cat__category_model_sports_leisure",
+      "cat__category_model_telephony",
+      "cat__category_model_toys",
+      "cat__category_model_watches_gifts",
+      "cat__category_model_infrequent_sklearn",
+      "cat__customer_state_BA",
+      "cat__customer_state_MG",
+      "cat__customer_state_PR",
+      "cat__customer_state_RJ",
+      "cat__customer_state_RS",
+      "cat__customer_state_SC",
+      "cat__customer_state_SP",
+      "cat__customer_state_infrequent_sklearn"
+    ],
+    "G2": [
+      "num__log_amount",
+      "num__log_item_count",
+      "num__log_weight_g",
+      "num__log_volume_cm3",
+      "num__log_distance_km",
+      "num__multi_seller",
+      "num__weight_missing",
+      "num__dimensions_missing",
+      "num__distance_missing",
+      "num__log_delivery_days",
+      "num__late",
+      "num__log_late_days",
+      "num__log_freight_ratio",
+      "cat__category_model_bed_bath_table",
+      "cat__category_model_computers_accessories",
+      "cat__category_model_cool_stuff",
+      "cat__category_model_furniture_decor",
+      "cat__category_model_garden_tools",
+      "cat__category_model_health_beauty",
+      "cat__category_model_housewares",
+      "cat__category_model_sports_leisure",
+      "cat__category_model_telephony",
+      "cat__category_model_toys",
+      "cat__category_model_watches_gifts",
+      "cat__category_model_infrequent_sklearn",
+      "cat__customer_state_BA",
+      "cat__customer_state_MG",
+      "cat__customer_state_PR",
+      "cat__customer_state_RJ",
+      "cat__customer_state_RS",
+      "cat__customer_state_SC",
+      "cat__customer_state_SP",
+      "cat__customer_state_infrequent_sklearn",
+      "region__local_category_share",
+      "region__log_relative_share"
+    ]
+  },
+  "versions": {
+    "lightgbm": "4.7.0",
+    "sklearn": "1.9.1",
+    "scipy": "1.18.1",
+    "pandas": "3.0.1",
+    "numpy": "2.3.5"
+  },
+  "checks": {
+    "previous_files_unchanged": 63,
+    "LightGBM_fits": 2,
+    "parameter_sets": 1,
+    "seed_values": 1,
+    "calibration_or_refit": false,
+    "independent_AP_Brier": true,
+    "saved_models_reproduce_predictions": true,
+    "LR_reproduces_V2_B": true,
+    "labels_mature_before_next_stage": true,
+    "models_locked_before_evaluation": true,
+    "evaluations_are_exploratory": true,
+    "implementation_fixes": []
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "source": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+  "source_archive_sha256": "967e41e04fc306fe604e2a693f488995a8b41e5047418f8a5c8e4abd6deca784",
+  "cutoff_exclusive": "2018-08-01 00:00:00",
+  "history_earliest_purchase": "2017-06-30 00:00:00",
+  "cutoff_reason": "Conservative complete-month boundary before late-August order taper; not a confirmed official observation endpoint.",
+  "flow": [
+    {
+      "stage": "唯一客户 / 首次观察订单",
+      "remaining": 96096,
+      "removed": 0
+    },
+    {
+      "stage": "首单状态 delivered 且有送达时间",
+      "remaining": 93248,
+      "removed": 2848
+    },
+    {
+      "stage": "首购时间不并列且审批、送达时间有效",
+      "remaining": 92910,
+      "removed": 338
+    },
+    {
+      "stage": "首单送达前没有其他下单",
+      "remaining": 92081,
+      "removed": 829
+    },
+    {
+      "stage": "90天结果在2018-08-01之前成熟",
+      "remaining": 65493,
+      "removed": 26588
+    },
+    {
+      "stage": "首购前有180天日历跨度（含早期稀疏数据）",
+      "remaining": 62733,
+      "removed": 2760
+    },
+    {
+      "stage": "180天窗口全部位于2017年起连续月份",
+      "remaining": 51981,
+      "removed": 10752
+    }
+  ],
+  "checks": {
+    "raw_orders": 99441,
+    "raw_customers": 96096,
+    "first_timestamp_ties": 276,
+    "orders_approved_before_purchase": 0,
+    "orders_delivered_before_purchase": 0,
+    "delivered_orders_missing_delivery": 8,
+    "prior_order_without_known_approval_by_t0": 16,
+    "repeat_customers_with_any_final_canceled_order": 4,
+    "repeat_customers_with_any_final_unavailable_order": 2,
+    "independent_raw_order_label_verification": "all main-cohort labels agree",
+    "regional_history_independent_check": "40 deterministic random rows agree with direct filtering; own-customer exclusion checked",
+    "models_fitted": 0
+  },
+  "quality": {
+    "missing_items": 0,
+    "missing_estimated_delivery": 0,
+    "missing_weight_any_item": 3,
+    "missing_dimensions_any_item": 3,
+    "unknown_category_any_item": 894,
+    "multi_category_orders": 383,
+    "nonpositive_amount": 0,
+    "multi_seller_orders": 640,
+    "customer_zip_without_geolocation": 141,
+    "orders_with_any_seller_without_geolocation": 131,
+    "missing_customer_state": 0
+  },
+  "mature_without_history_burnin": {
+    "customers": 65493,
+    "repeat90": 716,
+    "rate_pct": 1.0932466065075657
+  },
+  "literal_180d_history": {
+    "customers": 62733,
+    "repeat90": 693,
+    "rate_pct": 1.1046817464492373
+  },
+  "main": {
+    "customers": 51981,
+    "repeat90": 567,
+    "rate_pct": 1.0907831707739366,
+    "wilson95_pct": [
+      1.0050353678867736,
+      1.1837593401283015
+    ]
+  },
+  "splits": {
+    "train": {
+      "customers": 6459,
+      "repeat90": 71,
+      "rate_pct": 1.0992413686329152
+    },
+    "validation": {
+      "customers": 6862,
+      "repeat90": 60,
+      "rate_pct": 0.8743806470416788
+    },
+    "test": {
+      "customers": 7893,
+      "repeat90": 87,
+      "rate_pct": 1.1022424933485366
+    },
+    "unused_gap": {
+      "customers": 30767,
+      "repeat90": 349,
+      "rate_pct": 1.1343322390873338
+    }
+  },
+  "split_dates": {
+    "train": {
+      "t0_min": "2017-07-04 13:27:57",
+      "t0_max": "2017-08-31 23:34:54"
+    },
+    "validation": {
+      "t0_min": "2017-12-01 00:06:50",
+      "t0_max": "2017-12-31 15:19:16"
+    },
+    "test": {
+      "t0_min": "2018-04-01 01:46:52",
+      "t0_max": "2018-05-02 23:59:00"
+    }
+  },
+  "train_category_passes": [],
+  "full_cohort_category_passes_not_selection": [
+    "bed_bath_table",
+    "sports_leisure"
+  ],
+  "history_support": {
+    "state_history_equiv_quantiles": {
+      "0.0": 7.0,
+      "0.1": 491.0,
+      "0.5": 4148.0,
+      "0.9": 14272.000000000004,
+      "1.0": 16965.0
+    },
+    "state_history_below100": 589,
+    "single_category_history_below20": 7074,
+    "single_category_history_zero": 492,
+    "single_category_customers": 50739
+  },
+  "pretest_refit": {
+    "cutoff_t0_exclusive": "2018-01-01",
+    "customers": 25780,
+    "repeat90": 303,
+    "category_passes": [],
+    "note": "Optional final refit before Apr 2018 test, after settings are fixed. Not an additional validation set."
+  },
+  "case_recommendation": {
+    "descriptive_candidates": [
+      "bed_bath_table",
+      "sports_leisure"
+    ],
+    "selection_basis": "Top two single-category customer counts in the pretest refit pool; not selected for observed effect or significance. Neither passes the original training-only event threshold.",
+    "standalone_category_models_recommended": false
+  }
+}

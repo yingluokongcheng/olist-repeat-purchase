@@ -1,0 +1,19 @@
+{
+  "purpose": "Exploratory revision after viewing V1 test results, not fresh independent confirmation",
+  "versions": {"A": "M2 with month sin/cos, trained only on Jul-Aug 2017", "B": "A minus month sin/cos, all other settings identical", "C": "Frozen B plus intercept-only logistic calibration fitted on Dec 2017"},
+  "training": "audited split=train, 6459 customers/71 events",
+  "calibration": "audited split=validation, Dec 2017, 6862 customers/60 events",
+  "revision_evaluation": "audited split=test, Apr 1-May 2 2018, 7893 customers/87 events; already viewed in V1",
+  "model": "L2 LogisticRegression(C=0.1, solver=lbfgs, max_iter=3000, tol=1e-8, class_weight=None)",
+  "preprocessing": "same as V1: training-only median imputation/scaling, OneHotEncoder min_frequency=200, infrequent_if_exist",
+  "calibrator": "slope fixed to 1; solve mean(sigmoid(B logit + delta)) = calibration observed rate; unpenalized intercept only",
+  "refit_after_calibration": false,
+  "baselines": ["constant training prevalence", "constant calibration prevalence"],
+  "metrics": ["log_loss", "Brier", "mean prediction vs observed rate", "five equal-count calibration bins with Wilson intervals", "AP", "ROC-AUC", "top10 precision/recall/lift"],
+  "ranking_checks": ["B/C full rank order identical", "B/C top10 customer list identical", "B/C AP and ROC-AUC unchanged"],
+  "uncertainty": "1000 paired customer and 1000 paired state-cluster evaluation bootstraps of fixed predictions; separate 1000 customer and 1000 state-cluster calibration bootstraps for delta and resulting evaluation metrics with evaluation sample fixed; no bottom-model refits",
+  "seeds": [20261018, 20261019, 20261020, 20261021],
+  "stop_rule": "only A/B/C and two prespecified constants; no new features, parameter candidates, calibration methods, exclusions, or models based on evaluation results",
+  "preserve": "all V1 outputs and trained model/prediction artifacts hashed before and after; write only separate V2 folder",
+  "LightGBM": false
+}

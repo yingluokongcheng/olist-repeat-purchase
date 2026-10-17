@@ -1,0 +1,18 @@
+{
+  "status": "Fixed final exploratory algorithm comparison, agreed by user before execution",
+  "version": "LightGBM 4.7.0",
+  "models": {"LR": "Frozen V2 B without month terms", "G1": "Exactly the same information and frozen preprocessing as LR", "G2": "G1 plus local_category_share and log_relative_share; additional preprocessing fit only on training data"},
+  "parameters": {"boosting_type":"gbdt","objective":"binary","metric":"binary_logloss","learning_rate":0.03,"n_estimators":500,"max_depth":3,"num_leaves":7,"min_child_samples":500,"min_child_weight":0.001,"reg_lambda":10.0,"reg_alpha":0.0,"min_split_gain":0.0,"max_bin":63,"subsample":1.0,"subsample_freq":0,"colsample_bytree":1.0,"class_weight":null,"is_unbalance":false,"scale_pos_weight":1.0,"random_state":20261022,"deterministic":true,"force_col_wise":true,"n_jobs":2},
+  "early_stopping": {"metric":"binary_logloss","stopping_rounds":50,"min_delta":0.00001,"first_metric_only":true,"dataset":"December 2017 development only","selection":"best_iteration_ recorded by callback, no AP selection, no cap extension"},
+  "splits": {"training":"July-August 2017: 6459 customers/71 repeat events", "development":"December 2017: 6862/60", "revision_evaluation":"April 1-May 2 2018: 7893/87, already viewed in V1 and V2"},
+  "evaluation_order":"Train and save both models and a locked iteration/hash record before generating evaluation predictions",
+  "comparisons":["G1-LR","G2-G1"],
+  "metrics":["Average Precision", "top790 hits/precision/recall", "log_loss", "Brier", "mean probability and calibration quintiles", "ROC_AUC supplemental"],
+  "baselines":["training constant prevalence","development constant prevalence"],
+  "bootstrap":{"customer_reps":1000,"state_cluster_reps":1000,"customer_seed":20261023,"state_seed":20261024,"scope":"paired fixed predictions, no model refitting or early-stopping re-selection"},
+  "interpretation":"AP point improvement with both bootstrap intervals above zero permits only clear ranking improvement in this exploratory comparison. Otherwise insufficient evidence. Probability deterioration is a tradeoff, not overall superiority. No extra regional gain does not establish regional irrelevance.",
+  "ties":"Stable customer ID ascending order for equal scores, as in LR; report boundary ties",
+  "stop_rule":"Only G1 and G2, one parameter setting, one seed. No retuning, new features, calibration, post-development refit, or extensions based on evaluation outcomes. Record genuine implementation fixes separately.",
+  "preservation":"Hash all V1/V2 result and work artifacts before and after; new work/output directories only",
+  "independent_confirmation":false
+}

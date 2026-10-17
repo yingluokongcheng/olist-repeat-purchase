@@ -1,0 +1,422 @@
+{
+  "protocol": {
+    "status": "fixed before fitting or viewing model predictions",
+    "models": [
+      "M1_background",
+      "M2_fulfillment",
+      "M3_regional"
+    ],
+    "estimator": "L2 logistic regression, C=0.1, lbfgs, unweighted, max_iter=3000, tol=1e-8",
+    "tuning": "none; validation is diagnostic, no configuration selected from its scores",
+    "preprocessing": "training-only median imputation and scaling; category/state one-hot with min_frequency=200; missing indicators are explicit and fixed",
+    "regional": "180-day purchase history with approval known strictly before first purchase; per-order category weights sum to one; national Dirichlet 0.5 per taxonomy category, state shrinkage strength 100 order-equivalents; multi-category features averaged across categories",
+    "regional_features": [
+      "mean_shrunk_local_category_share",
+      "mean_log_local_to_national_share"
+    ],
+    "split": "initial train t0<2017-09-01; validation 2017-12-01<=t0<2018-01-01; final refit t0<2018-01-01; test t0>=2018-04-01 within audited mature cohort",
+    "features": "background log1p amount/items/weight/volume/mean seller-customer distance, month sine/cosine, multi-seller, weight/dimensions/distance missing indicators, category and state; fulfillment adds log1p delivery days, late indicator, log1p late days, log1p freight/amount",
+    "metrics": [
+      "average_precision (noninterpolated PR summary)",
+      "Brier",
+      "log_loss",
+      "ROC_AUC",
+      "top_10_percent_precision_recall_lift",
+      "calibration quintiles"
+    ],
+    "uncertainty": "paired 1000 customer bootstrap and 1000 state-cluster bootstrap of fixed test predictions; no model refitting; percentile 95% intervals",
+    "cases": "bed_bath_table and sports_leisure, descriptive only, full audited cohort; report exact counts and Wilson intervals, no significance-driven selection",
+    "seeds": [
+      20261016,
+      20261017
+    ],
+    "no_lightgbm": true,
+    "test_policy": "one fixed comparison; no model changes after test inspection"
+  },
+  "feature_sets": {
+    "M1": [
+      "log_amount",
+      "log_item_count",
+      "log_weight_g",
+      "log_volume_cm3",
+      "log_distance_km",
+      "multi_seller",
+      "month_sin",
+      "month_cos",
+      "weight_missing",
+      "dimensions_missing",
+      "distance_missing",
+      "category_model",
+      "customer_state"
+    ],
+    "M2": [
+      "log_amount",
+      "log_item_count",
+      "log_weight_g",
+      "log_volume_cm3",
+      "log_distance_km",
+      "multi_seller",
+      "month_sin",
+      "month_cos",
+      "weight_missing",
+      "dimensions_missing",
+      "distance_missing",
+      "log_delivery_days",
+      "late",
+      "log_late_days",
+      "log_freight_ratio",
+      "category_model",
+      "customer_state"
+    ],
+    "M3": [
+      "log_amount",
+      "log_item_count",
+      "log_weight_g",
+      "log_volume_cm3",
+      "log_distance_km",
+      "multi_seller",
+      "month_sin",
+      "month_cos",
+      "weight_missing",
+      "dimensions_missing",
+      "distance_missing",
+      "log_delivery_days",
+      "late",
+      "log_late_days",
+      "log_freight_ratio",
+      "local_category_share",
+      "log_relative_share",
+      "category_model",
+      "customer_state"
+    ]
+  },
+  "metrics": [
+    {
+      "stage": "validation",
+      "model": "M0",
+      "n": 6862,
+      "events": 60,
+      "prevalence": 0.008743806470416789,
+      "AP": 0.008743806470416789,
+      "Brier": 0.008672408553236139,
+      "log_loss": 0.050396004464636907,
+      "ROC_AUC": 0.5,
+      "mean_prediction": 0.01099241368632915,
+      "top10_n": 687,
+      "top10_hits": null,
+      "top10_precision": null,
+      "top10_recall": null,
+      "top10_lift": null
+    },
+    {
+      "stage": "validation",
+      "model": "M1",
+      "n": 6862,
+      "events": 60,
+      "prevalence": 0.008743806470416789,
+      "AP": 0.009904372657645948,
+      "Brier": 0.008706336795171013,
+      "log_loss": 0.05542403714915053,
+      "ROC_AUC": 0.5134053709693227,
+      "mean_prediction": 0.002545548255883833,
+      "top10_n": 687,
+      "top10_hits": 7,
+      "top10_precision": 0.010189228529839884,
+      "top10_recall": 0.11666666666666667,
+      "top10_lift": 1.165308102862688
+    },
+    {
+      "stage": "validation",
+      "model": "M2",
+      "n": 6862,
+      "events": 60,
+      "prevalence": 0.008743806470416789,
+      "AP": 0.0105814458215912,
+      "Brier": 0.008710655057856191,
+      "log_loss": 0.057091666479716065,
+      "ROC_AUC": 0.5173110849750073,
+      "mean_prediction": 0.002144990399142685,
+      "top10_n": 687,
+      "top10_hits": 7,
+      "top10_precision": 0.010189228529839884,
+      "top10_recall": 0.11666666666666667,
+      "top10_lift": 1.165308102862688
+    },
+    {
+      "stage": "validation",
+      "model": "M3",
+      "n": 6862,
+      "events": 60,
+      "prevalence": 0.008743806470416789,
+      "AP": 0.010178501365663945,
+      "Brier": 0.008711356133720271,
+      "log_loss": 0.0572138096978384,
+      "ROC_AUC": 0.5175732627658532,
+      "mean_prediction": 0.002116289436567279,
+      "top10_n": 687,
+      "top10_hits": 5,
+      "top10_precision": 0.00727802037845706,
+      "top10_recall": 0.08333333333333333,
+      "top10_lift": 0.8323629306162057
+    },
+    {
+      "stage": "test",
+      "model": "M0",
+      "n": 7893,
+      "events": 87,
+      "prevalence": 0.011022424933485367,
+      "AP": 0.011022424933485367,
+      "Brier": 0.010901465256238044,
+      "log_loss": 0.06067208006649615,
+      "ROC_AUC": 0.5,
+      "mean_prediction": 0.011753297129557798,
+      "top10_n": 790,
+      "top10_hits": null,
+      "top10_precision": null,
+      "top10_recall": null,
+      "top10_lift": null
+    },
+    {
+      "stage": "test",
+      "model": "M1",
+      "n": 7893,
+      "events": 87,
+      "prevalence": 0.011022424933485367,
+      "AP": 0.018493098443344947,
+      "Brier": 0.010920562864593489,
+      "log_loss": 0.06204347485905145,
+      "ROC_AUC": 0.6150029008042738,
+      "mean_prediction": 0.005442728002649785,
+      "top10_n": 790,
+      "top10_hits": 17,
+      "top10_precision": 0.021518987341772152,
+      "top10_recall": 0.19540229885057472,
+      "top10_lift": 1.9522915757311219
+    },
+    {
+      "stage": "test",
+      "model": "M2",
+      "n": 7893,
+      "events": 87,
+      "prevalence": 0.011022424933485367,
+      "AP": 0.019266281181529288,
+      "Brier": 0.01091713550199952,
+      "log_loss": 0.061755684215585936,
+      "ROC_AUC": 0.6426415283262801,
+      "mean_prediction": 0.0054044677935213906,
+      "top10_n": 790,
+      "top10_hits": 19,
+      "top10_precision": 0.024050632911392405,
+      "top10_recall": 0.21839080459770116,
+      "top10_lift": 2.181972937581842
+    },
+    {
+      "stage": "test",
+      "model": "M3",
+      "n": 7893,
+      "events": 87,
+      "prevalence": 0.011022424933485367,
+      "AP": 0.019296156346195484,
+      "Brier": 0.010917144698929739,
+      "log_loss": 0.06175569460752216,
+      "ROC_AUC": 0.6428697641955348,
+      "mean_prediction": 0.005403748580011139,
+      "top10_n": 790,
+      "top10_hits": 19,
+      "top10_precision": 0.024050632911392405,
+      "top10_recall": 0.21839080459770116,
+      "top10_lift": 2.181972937581842
+    }
+  ],
+  "bootstrap": [
+    {
+      "unit": "customer",
+      "replicates": 1000,
+      "intervals": {
+        "AP_M0": {
+          "low": 0.008868617762574433,
+          "high": 0.013429621183326999
+        },
+        "AP_M1": {
+          "low": 0.013528801843197115,
+          "high": 0.031603524720018455
+        },
+        "AP_M2": {
+          "low": 0.014059063411333223,
+          "high": 0.031202386135516007
+        },
+        "AP_M3": {
+          "low": 0.014066005979395392,
+          "high": 0.031149834230055923
+        },
+        "dAP_M1-M0": {
+          "low": 0.00320403395883817,
+          "high": 0.019906561485930573
+        },
+        "dBrier_M1-M0": {
+          "low": -8.414362454381864e-06,
+          "high": 4.6201023516800534e-05
+        },
+        "dAP_M2-M1": {
+          "low": -0.0034951545906658867,
+          "high": 0.00371614304518373
+        },
+        "dBrier_M2-M1": {
+          "low": -6.1681709701655145e-06,
+          "high": -9.544548094013104e-07
+        },
+        "dAP_M3-M2": {
+          "low": -0.00015437424831492609,
+          "high": 0.0004635814055117532
+        },
+        "dBrier_M3-M2": {
+          "low": -1.277992486819774e-07,
+          "high": 1.3164244242677702e-07
+        },
+        "dAP_M3-M1": {
+          "low": -0.0034316735757526635,
+          "high": 0.003813269449111933
+        },
+        "dBrier_M3-M1": {
+          "low": -6.128416624685351e-06,
+          "high": -9.611721427001119e-07
+        }
+      }
+    },
+    {
+      "unit": "state_cluster",
+      "replicates": 1000,
+      "intervals": {
+        "AP_M0": {
+          "low": 0.007905097235832242,
+          "high": 0.01306683761520662
+        },
+        "AP_M1": {
+          "low": 0.010907349973178585,
+          "high": 0.03653023691039089
+        },
+        "AP_M2": {
+          "low": 0.012659814419838614,
+          "high": 0.04348603850030781
+        },
+        "AP_M3": {
+          "low": 0.01266406018974882,
+          "high": 0.04323365843625627
+        },
+        "dAP_M1-M0": {
+          "low": 0.002788117267589414,
+          "high": 0.02516010834581195
+        },
+        "dBrier_M1-M0": {
+          "low": -1.2186597836411679e-05,
+          "high": 3.856400112246822e-05
+        },
+        "dAP_M2-M1": {
+          "low": -0.0012318906197097963,
+          "high": 0.007410296735619578
+        },
+        "dBrier_M2-M1": {
+          "low": -4.943080175309322e-06,
+          "high": 5.443875441767626e-07
+        },
+        "dAP_M3-M2": {
+          "low": -0.00011053276364050659,
+          "high": 0.00038236636003962553
+        },
+        "dBrier_M3-M2": {
+          "low": -2.3040982701201875e-07,
+          "high": 9.802666168555809e-08
+        },
+        "dAP_M3-M1": {
+          "low": -0.0010735953966041812,
+          "high": 0.007359394339433788
+        },
+        "dBrier_M3-M1": {
+          "low": -4.87829032140008e-06,
+          "high": 3.593473078918128e-07
+        }
+      }
+    }
+  ],
+  "fit_checks": [
+    {
+      "stage": "validation",
+      "model": "M1",
+      "n_features": 31,
+      "iterations": 34,
+      "converged": true,
+      "warnings": []
+    },
+    {
+      "stage": "validation",
+      "model": "M2",
+      "n_features": 35,
+      "iterations": 33,
+      "converged": true,
+      "warnings": []
+    },
+    {
+      "stage": "validation",
+      "model": "M3",
+      "n_features": 37,
+      "iterations": 35,
+      "converged": true,
+      "warnings": []
+    },
+    {
+      "stage": "test",
+      "model": "M1",
+      "n_features": 51,
+      "iterations": 53,
+      "converged": true,
+      "warnings": []
+    },
+    {
+      "stage": "test",
+      "model": "M2",
+      "n_features": 55,
+      "iterations": 55,
+      "converged": true,
+      "warnings": []
+    },
+    {
+      "stage": "test",
+      "model": "M3",
+      "n_features": 57,
+      "iterations": 55,
+      "converged": true,
+      "warnings": []
+    }
+  ],
+  "feature_checks": {
+    "rows": 51981,
+    "events90": 567,
+    "regional_direct_checks": 30,
+    "history_days": 180,
+    "shrinkage_orders": 100,
+    "national_prior_per_category": 0.5,
+    "taxonomy_categories": 74,
+    "distance_missing": 272,
+    "protocol_sha256": "f91b2c4a68602ec5baf1e3807aa3cdc628bda2d02c19af0180ecafc5803377c3",
+    "source_zip_sha256": "967e41e04fc306fe604e2a693f488995a8b41e5047418f8a5c8e4abd6deca784"
+  },
+  "versions": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "sklearn": "1.9.1",
+    "scipy": "1.18.1",
+    "numpy": "2.3.5",
+    "pandas": "3.0.1"
+  },
+  "checks": {
+    "AP_independent_recalculation": true,
+    "Brier_independent_recalculation": true,
+    "disjoint_refit_test": true,
+    "mature_labels_before_evaluation": true,
+    "no_model_changes_after_test": true,
+    "no_LightGBM": true,
+    "test_events": 87,
+    "models_fitted": 6,
+    "hyperparameter_candidates": 1
+  },
+  "case_scope": "full audited cohort, exploratory description, not held-out causal validation"
+}

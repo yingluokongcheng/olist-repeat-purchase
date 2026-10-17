@@ -1,0 +1,481 @@
+{
+  "protocol": {
+    "purpose": "Exploratory revision after viewing V1 test results, not fresh independent confirmation",
+    "versions": {
+      "A": "M2 with month sin/cos, trained only on Jul-Aug 2017",
+      "B": "A minus month sin/cos, all other settings identical",
+      "C": "Frozen B plus intercept-only logistic calibration fitted on Dec 2017"
+    },
+    "training": "audited split=train, 6459 customers/71 events",
+    "calibration": "audited split=validation, Dec 2017, 6862 customers/60 events",
+    "revision_evaluation": "audited split=test, Apr 1-May 2 2018, 7893 customers/87 events; already viewed in V1",
+    "model": "L2 LogisticRegression(C=0.1, solver=lbfgs, max_iter=3000, tol=1e-8, class_weight=None)",
+    "preprocessing": "same as V1: training-only median imputation/scaling, OneHotEncoder min_frequency=200, infrequent_if_exist",
+    "calibrator": "slope fixed to 1; solve mean(sigmoid(B logit + delta)) = calibration observed rate; unpenalized intercept only",
+    "refit_after_calibration": false,
+    "baselines": [
+      "constant training prevalence",
+      "constant calibration prevalence"
+    ],
+    "metrics": [
+      "log_loss",
+      "Brier",
+      "mean prediction vs observed rate",
+      "five equal-count calibration bins with Wilson intervals",
+      "AP",
+      "ROC-AUC",
+      "top10 precision/recall/lift"
+    ],
+    "ranking_checks": [
+      "B/C full rank order identical",
+      "B/C top10 customer list identical",
+      "B/C AP and ROC-AUC unchanged"
+    ],
+    "uncertainty": "1000 paired customer and 1000 paired state-cluster evaluation bootstraps of fixed predictions; separate 1000 customer and 1000 state-cluster calibration bootstraps for delta and resulting evaluation metrics with evaluation sample fixed; no bottom-model refits",
+    "seeds": [
+      20261018,
+      20261019,
+      20261020,
+      20261021
+    ],
+    "stop_rule": "only A/B/C and two prespecified constants; no new features, parameter candidates, calibration methods, exclusions, or models based on evaluation results",
+    "preserve": "all V1 outputs and trained model/prediction artifacts hashed before and after; write only separate V2 folder",
+    "LightGBM": false
+  },
+  "registration": {
+    "registered_utc": "2026-10-17T01:56:32.798823+00:00",
+    "protocol_sha256": "dc14677055b06205c025df885a07f51ccd6205a7b0d1ae6f60969d189e480c45",
+    "v1_file_count": 37
+  },
+  "features": {
+    "A": [
+      "log_amount",
+      "log_item_count",
+      "log_weight_g",
+      "log_volume_cm3",
+      "log_distance_km",
+      "multi_seller",
+      "month_sin",
+      "month_cos",
+      "weight_missing",
+      "dimensions_missing",
+      "distance_missing",
+      "log_delivery_days",
+      "late",
+      "log_late_days",
+      "log_freight_ratio",
+      "category_model",
+      "customer_state"
+    ],
+    "B": [
+      "log_amount",
+      "log_item_count",
+      "log_weight_g",
+      "log_volume_cm3",
+      "log_distance_km",
+      "multi_seller",
+      "weight_missing",
+      "dimensions_missing",
+      "distance_missing",
+      "log_delivery_days",
+      "late",
+      "log_late_days",
+      "log_freight_ratio",
+      "category_model",
+      "customer_state"
+    ]
+  },
+  "delta": -0.14227904350693452,
+  "odds_multiplier": 0.8673791861834571,
+  "metrics": [
+    {
+      "stage": "calibration",
+      "model": "P_train",
+      "n": 6862,
+      "events": 60,
+      "observed_rate": 0.008743806470416789,
+      "mean_prediction": 0.01099241368632915,
+      "mean_error": 0.0022486072159123606,
+      "log_loss": 0.050396004464636907,
+      "Brier": 0.008672408553236139,
+      "AP": 0.008743806470416789,
+      "ROC_AUC": 0.5,
+      "top10_hits": null,
+      "top10_precision": null,
+      "top10_recall": null,
+      "top10_lift": null
+    },
+    {
+      "stage": "calibration",
+      "model": "P_cal",
+      "n": 6862,
+      "events": 60,
+      "observed_rate": 0.008743806470416789,
+      "mean_prediction": 0.008743806470416785,
+      "mean_error": -3.469446951953614e-18,
+      "log_loss": 0.05014594834975364,
+      "Brier": 0.008667352318824683,
+      "AP": 0.008743806470416789,
+      "ROC_AUC": 0.5,
+      "top10_hits": null,
+      "top10_precision": null,
+      "top10_recall": null,
+      "top10_lift": null
+    },
+    {
+      "stage": "calibration",
+      "model": "A",
+      "n": 6862,
+      "events": 60,
+      "observed_rate": 0.008743806470416789,
+      "mean_prediction": 0.002144990399142685,
+      "mean_error": -0.006598816071274103,
+      "log_loss": 0.057091666479716065,
+      "Brier": 0.008710655057856191,
+      "AP": 0.0105814458215912,
+      "ROC_AUC": 0.5173110849750073,
+      "top10_hits": 7,
+      "top10_precision": 0.010189228529839884,
+      "top10_recall": 0.11666666666666667,
+      "top10_lift": 1.165308102862688
+    },
+    {
+      "stage": "calibration",
+      "model": "B",
+      "n": 6862,
+      "events": 60,
+      "observed_rate": 0.008743806470416789,
+      "mean_prediction": 0.010063998262801438,
+      "mean_error": 0.0013201917923846493,
+      "log_loss": 0.050973271745339915,
+      "Brier": 0.008674986181723077,
+      "AP": 0.012470507207924275,
+      "ROC_AUC": 0.5598990492992257,
+      "top10_hits": 10,
+      "top10_precision": 0.01455604075691412,
+      "top10_recall": 0.16666666666666666,
+      "top10_lift": 1.6647258612324114
+    },
+    {
+      "stage": "calibration",
+      "model": "C",
+      "n": 6862,
+      "events": 60,
+      "observed_rate": 0.008743806470416789,
+      "mean_prediction": 0.008743806470416789,
+      "mean_error": 0.0,
+      "log_loss": 0.05088152845962306,
+      "Brier": 0.008669704315984229,
+      "AP": 0.012470507207924275,
+      "ROC_AUC": 0.5598990492992257,
+      "top10_hits": 10,
+      "top10_precision": 0.01455604075691412,
+      "top10_recall": 0.16666666666666666,
+      "top10_lift": 1.6647258612324114
+    },
+    {
+      "stage": "evaluation",
+      "model": "P_train",
+      "n": 7893,
+      "events": 87,
+      "observed_rate": 0.011022424933485367,
+      "mean_prediction": 0.01099241368632915,
+      "mean_error": -3.0011247156217294e-05,
+      "log_loss": 0.060648640565495966,
+      "Brier": 0.010900931982746003,
+      "AP": 0.011022424933485367,
+      "ROC_AUC": 0.5,
+      "top10_hits": null,
+      "top10_precision": null,
+      "top10_recall": null,
+      "top10_lift": null
+    },
+    {
+      "stage": "evaluation",
+      "model": "P_cal",
+      "n": 7893,
+      "events": 87,
+      "observed_rate": 0.011022424933485367,
+      "mean_prediction": 0.008743806470416785,
+      "mean_error": -0.0022786184630685814,
+      "log_loss": 0.0609252432929138,
+      "Brier": 0.01090612318417128,
+      "AP": 0.011022424933485367,
+      "ROC_AUC": 0.5,
+      "top10_hits": null,
+      "top10_precision": null,
+      "top10_recall": null,
+      "top10_lift": null
+    },
+    {
+      "stage": "evaluation",
+      "model": "A",
+      "n": 7893,
+      "events": 87,
+      "observed_rate": 0.011022424933485367,
+      "mean_prediction": 0.0013901812741631402,
+      "mean_error": -0.009632243659322226,
+      "log_loss": 0.07470570671785141,
+      "Brier": 0.010989154720687963,
+      "AP": 0.01591599342008442,
+      "ROC_AUC": 0.5714761118031811,
+      "top10_hits": 12,
+      "top10_precision": 0.015189873417721518,
+      "top10_recall": 0.13793103448275862,
+      "top10_lift": 1.3780881711043211
+    },
+    {
+      "stage": "evaluation",
+      "model": "B",
+      "n": 7893,
+      "events": 87,
+      "observed_rate": 0.011022424933485367,
+      "mean_prediction": 0.009422646106073043,
+      "mean_error": -0.001599778827412324,
+      "log_loss": 0.06121331603410853,
+      "Brier": 0.010900754468128823,
+      "AP": 0.01566834799190259,
+      "ROC_AUC": 0.5772909727559996,
+      "top10_hits": 11,
+      "top10_precision": 0.013924050632911392,
+      "top10_recall": 0.12643678160919541,
+      "top10_lift": 1.2632474901789612
+    },
+    {
+      "stage": "evaluation",
+      "model": "C",
+      "n": 7893,
+      "events": 87,
+      "observed_rate": 0.011022424933485367,
+      "mean_prediction": 0.008186917359693418,
+      "mean_error": -0.002835507573791949,
+      "log_loss": 0.06153087442669082,
+      "Brier": 0.010902985605969862,
+      "AP": 0.01566834799190259,
+      "ROC_AUC": 0.5772909727559996,
+      "top10_hits": 11,
+      "top10_precision": 0.013924050632911392,
+      "top10_recall": 0.12643678160919541,
+      "top10_lift": 1.2632474901789612
+    }
+  ],
+  "ranking": {
+    "calibration": {
+      "full_rank_identical": true,
+      "top10_identical": true,
+      "rank_positions_changed": 0,
+      "top10_size": 687,
+      "top10_overlap": 687,
+      "AP_difference": 0.0,
+      "ROC_AUC_difference": 0.0
+    },
+    "evaluation": {
+      "full_rank_identical": true,
+      "top10_identical": true,
+      "rank_positions_changed": 0,
+      "top10_size": 790,
+      "top10_overlap": 790,
+      "AP_difference": 0.0,
+      "ROC_AUC_difference": 0.0
+    }
+  },
+  "fit_checks": [
+    {
+      "model": "A",
+      "converged": true,
+      "iterations": 33,
+      "features": 35,
+      "warnings": []
+    },
+    {
+      "model": "B",
+      "converged": true,
+      "iterations": 34,
+      "features": 33,
+      "warnings": []
+    }
+  ],
+  "evaluation_bootstrap": [
+    {
+      "unit": "customer",
+      "replicates": 1000,
+      "intervals": {
+        "log_loss_B-A": {
+          "low": -0.017796103644715025,
+          "high": -0.009160867258881905
+        },
+        "Brier_B-A": {
+          "low": -0.0001372051533062728,
+          "high": -4.062688996898466e-05
+        },
+        "AP_B-A": {
+          "low": -0.006196989248196808,
+          "high": 0.001759068502252895
+        },
+        "log_loss_C-B": {
+          "low": -7.95575368414871e-06,
+          "high": 0.0006223746198860419
+        },
+        "Brier_C-B": {
+          "low": -5.143381612405639e-06,
+          "high": 9.732822203352246e-06
+        },
+        "AP_C-B": {
+          "low": 0.0,
+          "high": 0.0
+        },
+        "log_loss_B-P_train": {
+          "low": -0.0010774527841719945,
+          "high": 0.0024666100390564015
+        },
+        "Brier_B-P_train": {
+          "low": -3.056946846415956e-05,
+          "high": 2.696718578427234e-05
+        },
+        "AP_B-P_train": {
+          "low": 0.0009254781232460086,
+          "high": 0.02027058676897973
+        },
+        "log_loss_C-P_cal": {
+          "low": -0.0010280342965602873,
+          "high": 0.0024420158021329396
+        },
+        "Brier_C-P_cal": {
+          "low": -2.9644256745593948e-05,
+          "high": 1.9711588516135247e-05
+        },
+        "AP_C-P_cal": {
+          "low": 0.0009254781232460086,
+          "high": 0.02027058676897973
+        }
+      },
+      "scope": "fixed models and fixed calibrator; evaluation sampling uncertainty only"
+    },
+    {
+      "unit": "state_cluster",
+      "replicates": 1000,
+      "intervals": {
+        "log_loss_B-A": {
+          "low": -0.01734418900877183,
+          "high": -0.007842622524498199
+        },
+        "Brier_B-A": {
+          "low": -0.0001328261937724025,
+          "high": -1.841593507116911e-05
+        },
+        "AP_B-A": {
+          "low": -0.017440346168906364,
+          "high": 0.0017063883927103353
+        },
+        "log_loss_C-B": {
+          "low": -1.8001173367297727e-05,
+          "high": 0.0005637555094887625
+        },
+        "Brier_C-B": {
+          "low": -6.437528753640482e-06,
+          "high": 7.572511847836298e-06
+        },
+        "AP_C-B": {
+          "low": 0.0,
+          "high": 0.0
+        },
+        "log_loss_B-P_train": {
+          "low": -0.0007309634407116361,
+          "high": 0.0044558395487413445
+        },
+        "Brier_B-P_train": {
+          "low": -1.3773823957643734e-05,
+          "high": 3.556691393076711e-05
+        },
+        "AP_B-P_train": {
+          "low": 0.0007123145961606005,
+          "high": 0.04306242580599656
+        },
+        "log_loss_C-P_cal": {
+          "low": -0.0007899667968367392,
+          "high": 0.004657594828792334
+        },
+        "Brier_C-P_cal": {
+          "low": -1.800193484640892e-05,
+          "high": 3.270912557893322e-05
+        },
+        "AP_C-P_cal": {
+          "low": 0.0007123145961606005,
+          "high": 0.04306242580599656
+        }
+      },
+      "scope": "fixed models and fixed calibrator; evaluation sampling uncertainty only"
+    }
+  ],
+  "calibrator_bootstrap": [
+    {
+      "unit": "customer",
+      "replicates": 1000,
+      "intervals": {
+        "delta": {
+          "low": -0.42806031766632696,
+          "high": 0.08939208496736702
+        },
+        "odds_multiplier": {
+          "low": 0.651772100247967,
+          "high": 1.0935093334713049
+        },
+        "evaluation_mean_prediction": {
+          "low": 0.006168956847940354,
+          "high": 0.010291430262830463
+        },
+        "evaluation_Brier": {
+          "low": 0.010900757426872246,
+          "high": 0.010915503033799253
+        },
+        "evaluation_log_loss": {
+          "low": 0.06111264458234593,
+          "high": 0.06264300717513516
+        }
+      },
+      "scope": "calibration sampling uncertainty only, fixed bottom model and evaluation sample; not joint total uncertainty"
+    },
+    {
+      "unit": "state_cluster",
+      "replicates": 1000,
+      "intervals": {
+        "delta": {
+          "low": -1.0565805379360576,
+          "high": 0.09201168003012085
+        },
+        "odds_multiplier": {
+          "low": 0.3476425319342505,
+          "high": 1.0963776291406857
+        },
+        "evaluation_mean_prediction": {
+          "low": 0.0033033628865869326,
+          "high": 0.010318046522246098
+        },
+        "evaluation_Brier": {
+          "low": 0.010900756279599855,
+          "high": 0.010952262959047283
+        },
+        "evaluation_log_loss": {
+          "low": 0.061106696607562246,
+          "high": 0.06668660810665997
+        }
+      },
+      "scope": "calibration sampling uncertainty only, fixed bottom model and evaluation sample; not joint total uncertainty"
+    }
+  ],
+  "checks": {
+    "V1_preserved": true,
+    "V1_files_checked": 37,
+    "A_calibration_predictions_reproduce_V1_M2": true,
+    "calibration_mean_matches_by_construction": true,
+    "disjoint_time_splits": true,
+    "labels_mature_before_next_stage": true,
+    "bottom_models_fitted": 2,
+    "hyperparameter_candidates": 1,
+    "calibration_methods": 1,
+    "independent_AP_Brier_check": true,
+    "no_refit_after_calibration": true,
+    "no_LightGBM": true,
+    "evaluation_not_fresh": true
+  }
+}

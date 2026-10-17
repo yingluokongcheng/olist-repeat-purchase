@@ -1,0 +1,29 @@
+[
+  {
+    "model": "LR",
+    "strictly_above": 789,
+    "boundary_tie_customers": 1,
+    "boundary_tie_events": 0,
+    "boundary_slots": 1,
+    "expected_hits_if_uniform_tie_break": 11.0,
+    "observed_fixed_order_hits": 11
+  },
+  {
+    "model": "G1",
+    "strictly_above": 0,
+    "boundary_tie_customers": 1548,
+    "boundary_tie_events": 22,
+    "boundary_slots": 790,
+    "expected_hits_if_uniform_tie_break": 11.227390180878553,
+    "observed_fixed_order_hits": 13
+  },
+  {
+    "model": "G2",
+    "strictly_above": 789,
+    "boundary_tie_customers": 1,
+    "boundary_tie_events": 0,
+    "boundary_slots": 1,
+    "expected_hits_if_uniform_tie_break": 18.0,
+    "observed_fixed_order_hits": 18
+  }
+]
